@@ -1,0 +1,1 @@
+export { getBlogPosts, getCategories } from "./contentful/blogPost";
