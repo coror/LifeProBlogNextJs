@@ -1,5 +1,6 @@
 import date from 'date-and-time';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
+import { createClient } from 'contentful-management';
 
 export const dateReducer = (dateStr) => {
   const dateObj = date.parse(dateStr.split('T')[0], 'YYYY-MM-DD');
@@ -26,18 +27,6 @@ export const imageReducer = (imageField) => {
   };
 };
 
-export const categoriesReducer = (rawBlogPosts) => {
-  const categoriesSet = new Set();
-
-  rawBlogPosts.forEach((rawBlogPost) => {
-    if (rawBlogPost.fields.category) {
-      categoriesSet.add(rawBlogPost.fields.category);
-    }
-  });
-
-  return Array.from(categoriesSet);
-};
-
 export const blogPostReducer = (rawBlogPost) => {
   let blogPost = { ...rawBlogPost.fields };
 
@@ -57,4 +46,32 @@ export const truncateText = (htmlString, maxLength) => {
     return plainText;
   }
   return plainText.substring(0, maxLength) + '...';
+};
+
+export const fetchPredefinedCategories = async () => {
+  const managementClient = createClient({
+    accessToken: process.env.CONTENTFUL_MANAGEMENT_ACCESS_TOKEN, 
+  });
+
+  try {
+    const space = await managementClient.getSpace(
+      process.env.CONTENTFUL_SPACE_ID
+    );
+    const environment = await space.getEnvironment('master'); 
+    const contentType = await environment.getContentType('blogPost'); 
+
+    const categoryField = contentType.fields.find(
+      (field) => field.id === 'category'
+    ); 
+
+    if (!categoryField) {
+      throw new Error('Category field not found in the blogPost content type');
+    }
+    const categories = categoryField.validations[0].in; 
+
+    return categories;
+  } catch (error) {
+    console.error('Error fetching predefined categories:', error.message);
+    throw new Error('Failed to fetch predefined categories from content model');
+  }
 };

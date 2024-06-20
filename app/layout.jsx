@@ -5,7 +5,6 @@ import Footer from '@/components/Footer';
 export const metadata = {
   title: 'LifePlus | Home',
   description: 'Find your dream blog read',
-  keywords: 'blog, fintness, health, lifestyle',
 };
 
 const MainLayout = ({ children }) => {

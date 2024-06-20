@@ -1,5 +1,6 @@
 import { client } from './client';
-import { blogPostReducer, categoriesReducer } from './utils';
+import { blogPostReducer } from './utils';
+import { fetchPredefinedCategories } from './utils';
 
 export const getBlogPosts = async () => {
   const res = await client.getEntries({ content_type: 'blogPost' });
@@ -37,9 +38,11 @@ export const getBlogPostBySlug = async (slug) => {
 };
 
 export const getCategories = async () => {
-  const res = await client.getEntries({ content_type: 'blogPost' });
-  const rawBlogPosts = res.items;
-
-  const categories = categoriesReducer(rawBlogPosts);
-  return categories;
+  try {
+    const categories = await fetchPredefinedCategories();
+    return categories;
+  } catch (error) {
+    console.error('Error in getCategories:', error.message);
+    throw new Error('Failed to get categories');
+  }
 };
