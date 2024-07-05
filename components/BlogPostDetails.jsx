@@ -1,6 +1,5 @@
 import { CldImage } from 'next-cloudinary';
 
-
 const BlogPostDetails = ({ blogPost }) => {
   return (
     <div className='flex flex-col items-center m-10'>

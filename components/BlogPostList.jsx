@@ -1,4 +1,3 @@
-
 import BlogPostCard from './BlogPostCard';
 
 const BlogPostList = ({ blogPosts }) => {

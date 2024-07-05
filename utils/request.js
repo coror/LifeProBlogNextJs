@@ -1,14 +1,14 @@
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN || null;
 
 // fetch all blogposts
-async function fetchBlogPosts() {
+async function fetchBlogPosts(language = 'en-US') {
   try {
     // Handle the case where the domain is not available yet
     if (!apiDomain) {
       return [];
     }
 
-    const res = await fetch(`${apiDomain}/blogPosts`);
+    const res = await fetch(`${apiDomain}/blogPosts?language=${language}`);
 
     if (!res.ok) {
       throw new Error('Failed to fetch data');
@@ -25,22 +25,22 @@ async function fetchBlogPosts() {
 }
 
 // Fetch single blogPost
-async function fetchBlogPost(slug) {
+async function fetchBlogPost(slug, language = 'en-US') {
   try {
     // Handle the case where the domain is not available yet
     if (!apiDomain) {
       return null;
     }
 
-    const res = await fetch(`${apiDomain}/blogPosts/${slug}`);
+    const res = await fetch(
+      `${apiDomain}/blogPosts/${slug}?language=${language}`
+    );
 
     if (!res.ok) {
       throw new Error('Failed to fetch data');
     }
 
     const data = await res.json();
-    // console.log('Fetched data:', data);
-
     return data.blogPost;
   } catch (error) {
     console.log(error);
@@ -48,25 +48,33 @@ async function fetchBlogPost(slug) {
   }
 }
 
+
 // Fetch all categories
-async function fetchCategories() {
+async function fetchCategories(language = 'en-US') {
   try {
     if (!apiDomain) {
-      return null;
+      return [];
     }
 
-    const res = await fetch(`${apiDomain}/blogPosts/categories`);
+    const res = await fetch(`${apiDomain}/categories?language=${language}`);
 
     if (!res.ok) {
-      throw new Error('Faild to fetch data');
+      throw new Error('Failed to fetch data');
     }
 
     const data = await res.json();
+    console.log('Fetched categories data:', data);
 
-    return data.categories;
+    // Directly access the name property without looking for nested fields
+    const categories = data.categories.map((item) => ({
+      name: item.name,
+      // Add any other necessary fields here
+    }));
+
+    return categories;
   } catch (error) {
     console.log(error);
-    return null;
+    return [];
   }
 }
 

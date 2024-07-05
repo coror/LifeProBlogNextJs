@@ -2,9 +2,13 @@
 import { CldImage } from 'next-cloudinary';
 import Link from 'next/link';
 import { truncateText } from '@/datalayer/contentful/utils';
+import { translations } from '@/utils/translations';
+import { useLanguage } from '@/app/contexts/LanguageContext';
 
 function BlogPostCard({ blogPost }) {
   const truncatedContent = truncateText(blogPost.content, 130);
+  const {language } = useLanguage()
+  const currentTranslations = translations[language]
 
   return (
     <div className='flex flex-col md:flex-row mb-6 mt-6 items-center'>
@@ -36,7 +40,7 @@ function BlogPostCard({ blogPost }) {
           href={`/blogPosts/${blogPost.slug}`}
           className='m-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-center text-sm'
         >
-          Read More
+          {currentTranslations.readMore}
         </Link>
       </div>
     </div>

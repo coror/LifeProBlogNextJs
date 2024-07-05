@@ -3,8 +3,16 @@ import { getBlogPosts } from '@/datalayer';
 // GET /api/blogPosts
 export const GET = async (request) => {
   try {
-    const blogPosts = await getBlogPosts();
-    // console.log('API blogPosts:', blogPosts);  // Add this line
+    // Parse query parameters from the URL
+    const { searchParams } = new URL(request.url);
+    const language = searchParams.get('language') || 'en-US';
+
+    console.log(`Received language parameter: ${language}`);
+
+    // Fetch blog posts based on the language parameter
+    const blogPosts = await getBlogPosts(language);
+
+    console.log(`Fetched ${blogPosts.length} blog posts for ${language}`);
 
     return new Response(JSON.stringify({ blogPosts }), { status: 200 });
   } catch (error) {

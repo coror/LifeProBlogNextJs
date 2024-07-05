@@ -6,6 +6,8 @@ import Link from 'next/link';
 import logo from '@/assets/images/logo-white.png';
 import profileDefault from '@/assets/images/profile.png';
 import { FaGoogle } from 'react-icons/fa';
+import { useLanguage } from '@/app/contexts/LanguageContext';
+import { translations } from '@/utils/translations';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -13,6 +15,13 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const pathname = usePathname();
+  const { language, changeLanguage } = useLanguage();
+
+  const handleLanguageChange = (event) => {
+    changeLanguage(event.target.value);
+  };
+
+  const currentTranslations = translations[language];
 
   return (
     <nav className='bg-blue-700 border-b border-blue-500'>
@@ -65,7 +74,7 @@ const Navbar = () => {
                     pathname === '/' ? 'bg-black' : ''
                   } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
                 >
-                  Home
+                  {currentTranslations.home}
                 </Link>
                 <Link
                   href='/blogPosts'
@@ -73,7 +82,7 @@ const Navbar = () => {
                     pathname === '/blogPosts' ? 'bg-black' : ''
                   } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
                 >
-                  BlogPosts
+                  {currentTranslations.blogPosts}
                 </Link>
                 {/* {isLoggedIn && (
                   <Link
@@ -87,6 +96,18 @@ const Navbar = () => {
                 )} */}
               </div>
             </div>
+          </div>
+
+          {/* Language Selector */}
+          <div className=' md:block md:ml-6'>
+            <select
+              value={language}
+              onChange={handleLanguageChange}
+              className='text-white bg-blue-700 hover:bg-blue-900 hover:text-white rounded-md px-3  py-2'
+            >
+              <option value='en-US'>EN</option>
+              <option value='de'>DE</option>
+            </select>
           </div>
 
           {/* <!-- Right Side Menu (Logged Out) --> */}
@@ -207,7 +228,7 @@ const Navbar = () => {
                 pathname === '/' ? 'bg-black' : ''
               } text-white block rounded-md px-3 py-2 text-base font-medium`}
             >
-              Home
+              {currentTranslations.home}
             </Link>
             <Link
               href='/blogPosts'
@@ -215,7 +236,7 @@ const Navbar = () => {
                 pathname === '/blogPosts' ? 'bg-black' : ''
               } text-white block rounded-md px-3 py-2 text-base font-medium`}
             >
-              BlogPosts
+              {currentTranslations.blogPosts}
             </Link>
             {isLoggedIn && (
               <Link
