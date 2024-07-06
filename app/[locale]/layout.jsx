@@ -32,7 +32,7 @@ const MainLayout = async ({ children, params: { locale } }) => {
       locale={locale}
       namespaces={i18nNamespaces}
     >
-      <html lang='en'>
+      <html lang='en-US'>
         <body>
           <Navbar />
           <main>{children}</main>

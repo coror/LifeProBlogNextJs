@@ -3,10 +3,13 @@ import { blogPostReducer } from './utils';
 
 export const getBlogPosts = async (language = 'en-US') => {
   try {
-    console.log(`Fetching blog posts for language : ${language}`);
+    // Adjust language to 'en-US' if 'en' is passed
+    const adjustedLanguage = language === 'en' ? 'en-US' : language;
+
+    console.log(`Fetching blog posts for language : ${adjustedLanguage}`);
     const res = await client.getEntries({
       content_type: 'blogPost',
-      locale: language,
+      locale: adjustedLanguage,
     });
 
     console.log('Fetched blog posts response:');
@@ -17,7 +20,7 @@ export const getBlogPosts = async (language = 'en-US') => {
       blogPostReducer(rawBlogPost)
     );
 
-   console.log(blogPosts)
+    console.log(blogPosts);
 
     return blogPosts;
   } catch (error) {
