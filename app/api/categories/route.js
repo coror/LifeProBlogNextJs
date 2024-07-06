@@ -2,9 +2,7 @@ import { getCategories } from '@/datalayer/contentful/category';
 
 export const GET = async (request) => {
   try {
-    const {searchParams} = new URL(request.url)
-    const language = searchParams.get('language') || 'en-US'
-    const rawCategories = await getCategories(language);
+    const rawCategories = await getCategories();
 
     if (!rawCategories || rawCategories.length === 0) {
       return new Response('No categories found!', { status: 404 });

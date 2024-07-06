@@ -5,26 +5,21 @@ import CategorySection from '@/components/CategorySection';
 import FeaturedBlogPostsList from '@/components/FeaturedBlogPostsList';
 import { fetchBlogPosts, fetchCategories } from '@/utils/request';
 import { useEffect, useState } from 'react';
-import LanguageSelector from '@/components/LanguageSelector';
-import { useLanguage } from './contexts/LanguageContext';
 
-const HomePage = () => {
+const HomePageComponent = () => {
   const [blogPosts, setBlogPosts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [featuredBlogPosts, setFeaturedBlogPosts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('show all');
   const [loading, setLoading] = useState(true);
-  // const [language, setLanguage] = useState('en-US');
-
-  const { language } = useLanguage();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true); // Ensure loading state is set to true when refetching
-        console.log('Fetching data for language:', language); // Debugging statement
-        const fetchedBlogPosts = await fetchBlogPosts(language);
-        const fetchedCategories = await fetchCategories(language);
+        console.log('Fetching data for language:'); // Debugging statement
+        const fetchedBlogPosts = await fetchBlogPosts();
+        const fetchedCategories = await fetchCategories();
         setBlogPosts(fetchedBlogPosts);
         setCategories([{ name: 'show all' }, ...fetchedCategories]);
         setFeaturedBlogPosts(fetchedBlogPosts);
@@ -36,7 +31,7 @@ const HomePage = () => {
     };
 
     fetchData();
-  }, [language]);
+  }, []);
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
@@ -71,4 +66,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default HomePageComponent;

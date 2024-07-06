@@ -1,24 +1,25 @@
 // BlogPostPage.jsx
-'use client'
+'use client';
 import { useEffect, useState } from 'react';
 import { notFound, useParams } from 'next/navigation';
 import Link from 'next/link';
 import BlogPostDetails from '@/components/BlogPostDetails';
 import { fetchBlogPost } from '@/utils/request';
-import { useLanguage } from '@/app/contexts/LanguageContext';
+import { useTranslation } from 'react-i18next';
 
 const BlogPostPage = () => {
   const { slug } = useParams();
-  const { language } = useLanguage(); // Note the correct usage of useLanguage hook
   const [blogPost, setBlogPost] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchBlogPostData = async () => {
       if (!slug) return;
       setLoading(true); // Set loading to true before fetching new data
       try {
-        const fetchedBlogPost = await fetchBlogPost(slug, language);
+        const fetchedBlogPost = await fetchBlogPost(slug);
         setBlogPost(fetchedBlogPost);
       } catch (error) {
         console.error('Error fetching blogPost:', error);
@@ -28,7 +29,7 @@ const BlogPostPage = () => {
     };
 
     fetchBlogPostData(); // Always trigger fetch on component mount or slug change
-  }, [slug, language]); // Re-fetch whenever slug or language changes
+  }, [slug]); // Re-fetch whenever slug or language changes
 
   if (!blogPost && !loading) {
     notFound(); // Handle not found scenario
@@ -45,7 +46,7 @@ const BlogPostPage = () => {
                   href='/'
                   className='text-gray-400 hover:text-gray-600 transition flex items-center flex-row mx-1'
                 >
-                  Home
+                  {t('navbar:home')}
                 </Link>
               </li>
               <li className='text-gray-400 mx-1'>&gt;</li>

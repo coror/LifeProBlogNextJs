@@ -2,10 +2,8 @@
 import { useEffect, useState } from 'react';
 import { fetchBlogPosts } from '@/utils/request';
 import BlogPostCard from '@/components/BlogPostCard';
-import { useLanguage } from '../contexts/LanguageContext';
 
 const BlogPostsPage = () => {
-  const { language } = useLanguage();
   const [blogPosts, setBlogPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,7 +11,7 @@ const BlogPostsPage = () => {
     const fetchData = async () => {
       try {
         setLoading(true); 
-        const fetchedBlogPosts = await fetchBlogPosts(language);
+        const fetchedBlogPosts = await fetchBlogPosts();
         fetchedBlogPosts.sort(
           (a, b) => new Date(b.datePosted) - new Date(a.datePosted)
         );
@@ -26,7 +24,7 @@ const BlogPostsPage = () => {
     };
 
     fetchData();
-  }, [language]);
+  }, []);
 
   return (
     <section className='px-4 py-6'>

@@ -1,13 +1,11 @@
 import { client } from './client';
 import { blogPostReducer } from './utils';
-// import { fetchPredefinedCategories } from './utils';
 
-export const getBlogPosts = async (language = 'en-US') => {
+export const getBlogPosts = async () => {
   try {
-    console.log(`Fetching blog posts for language : ${language}`);
+    console.log(`Fetching blog posts for language : `);
     const res = await client.getEntries({
       content_type: 'blogPost',
-      locale: language,
     });
 
     console.log('Fetched blog posts response:');
@@ -22,7 +20,7 @@ export const getBlogPosts = async (language = 'en-US') => {
 
     return blogPosts;
   } catch (error) {
-    console.log(`Error fetching blog posts for ${language}`, error);
+    console.log(`Error fetching blog posts for `, error);
     return [];
   }
 };
@@ -40,17 +38,16 @@ export const getSlugs = async () => {
   return slugs;
 };
 
-export const getBlogPostBySlug = async (slug, language = 'en-US') => {
+export const getBlogPostBySlug = async (slug) => {
   try {
-    console.log(`Fetching blog post for slug: ${slug}, language: ${language}`);
+    console.log(`Fetching blog post for slug: ${slug}, language:`);
     const found = await client.getEntries({
       content_type: 'blogPost',
       'fields.slug': slug,
-      locale: language,
       include: 2,
     });
 
-    console.log(`Raw API response for slug: ${slug}, language: ${language}`, found); // Detailed logging
+    console.log(`Raw API response for slug: ${slug}, language:`, found); // Detailed logging
 
     if (found.items.length === 0) {
       console.log(`Blog post not found for slug: ${slug}`);
@@ -60,7 +57,7 @@ export const getBlogPostBySlug = async (slug, language = 'en-US') => {
     const blogPost = found.items[0];
     return blogPostReducer(blogPost);
   } catch (error) {
-    console.error(`Error fetching blog post for slug ${slug} and language ${language}`, error);
+    console.error(`Error fetching blog post for slug ${slug} and language`, error);
     return null;
   }
 };

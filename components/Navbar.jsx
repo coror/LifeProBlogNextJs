@@ -6,22 +6,16 @@ import Link from 'next/link';
 import logo from '@/assets/images/logo-white.png';
 import profileDefault from '@/assets/images/profile.png';
 import { FaGoogle } from 'react-icons/fa';
-import { useLanguage } from '@/app/contexts/LanguageContext';
-import { translations } from '@/utils/translations';
+import LanguageChanger from './LanguageChanger';
+import { useTranslation } from 'react-i18next';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { t } = useTranslation();
 
   const pathname = usePathname();
-  const { language, changeLanguage } = useLanguage();
-
-  const handleLanguageChange = (event) => {
-    changeLanguage(event.target.value);
-  };
-
-  const currentTranslations = translations[language];
 
   return (
     <nav className='bg-blue-700 border-b border-blue-500'>
@@ -74,7 +68,7 @@ const Navbar = () => {
                     pathname === '/' ? 'bg-black' : ''
                   } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
                 >
-                  {currentTranslations.home}
+                  {t('navbar:home')}
                 </Link>
                 <Link
                   href='/blogPosts'
@@ -82,7 +76,7 @@ const Navbar = () => {
                     pathname === '/blogPosts' ? 'bg-black' : ''
                   } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
                 >
-                  {currentTranslations.blogPosts}
+                  {t('navbar:blog_posts')}
                 </Link>
                 {/* {isLoggedIn && (
                   <Link
@@ -99,16 +93,7 @@ const Navbar = () => {
           </div>
 
           {/* Language Selector */}
-          <div className=' md:block md:ml-6'>
-            <select
-              value={language}
-              onChange={handleLanguageChange}
-              className='text-white bg-blue-700 hover:bg-blue-900 hover:text-white rounded-md px-3  py-2'
-            >
-              <option value='en-US'>EN</option>
-              <option value='de'>DE</option>
-            </select>
-          </div>
+          <LanguageChanger />
 
           {/* <!-- Right Side Menu (Logged Out) --> */}
           {/* {!isLoggedIn && (
@@ -228,7 +213,7 @@ const Navbar = () => {
                 pathname === '/' ? 'bg-black' : ''
               } text-white block rounded-md px-3 py-2 text-base font-medium`}
             >
-              {currentTranslations.home}
+              {t('navbar:home')}
             </Link>
             <Link
               href='/blogPosts'
@@ -236,7 +221,7 @@ const Navbar = () => {
                 pathname === '/blogPosts' ? 'bg-black' : ''
               } text-white block rounded-md px-3 py-2 text-base font-medium`}
             >
-              {currentTranslations.blogPosts}
+              {t('navbar:blog_posts')}
             </Link>
             {isLoggedIn && (
               <Link

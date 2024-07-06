@@ -1,7 +1,11 @@
 import Navbar from '@/components/Navbar';
 import '@/assets/styles/globals.css';
 import Footer from '@/components/Footer';
-import { LanguageProvider } from './contexts/LanguageContext';
+import LanguageChanger from '@/components/LanguageChanger';
+import TranslationsProvider from '@/components/TranslationsProvider';
+import initTranslations from '../u18n';
+
+const i18nNamespaces = ['home', 'common', 'navbar'];
 
 export const metadata = {
   title: 'LifePlus | Home',
@@ -19,17 +23,23 @@ export const metadata = {
   // },
 };
 
-const MainLayout = ({ children }) => {
+const MainLayout = async ({ children, params: { locale } }) => {
+  const { t, resources } = await initTranslations(locale, i18nNamespaces);
+
   return (
-    <html lang='en'>
-      <body>
-        <LanguageProvider>
+    <TranslationsProvider
+      resources={resources}
+      locale={locale}
+      namespaces={i18nNamespaces}
+    >
+      <html lang='en'>
+        <body>
           <Navbar />
           <main>{children}</main>
           <Footer />
-        </LanguageProvider>
-      </body>
-    </html>
+        </body>
+      </html>
+    </TranslationsProvider>
   );
 };
 

@@ -1,14 +1,14 @@
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN || null;
 
 // fetch all blogposts
-async function fetchBlogPosts(language = 'en-US') {
+async function fetchBlogPosts() {
   try {
     // Handle the case where the domain is not available yet
     if (!apiDomain) {
       return [];
     }
 
-    const res = await fetch(`${apiDomain}/blogPosts?language=${language}`);
+    const res = await fetch(`${apiDomain}/blogPosts`);
 
     if (!res.ok) {
       throw new Error('Failed to fetch data');
@@ -25,7 +25,7 @@ async function fetchBlogPosts(language = 'en-US') {
 }
 
 // Fetch single blogPost
-async function fetchBlogPost(slug, language = 'en-US') {
+async function fetchBlogPost(slug) {
   try {
     // Handle the case where the domain is not available yet
     if (!apiDomain) {
@@ -33,7 +33,7 @@ async function fetchBlogPost(slug, language = 'en-US') {
     }
 
     const res = await fetch(
-      `${apiDomain}/blogPosts/${slug}?language=${language}`
+      `${apiDomain}/blogPosts/${slug}`
     );
 
     if (!res.ok) {
@@ -50,13 +50,13 @@ async function fetchBlogPost(slug, language = 'en-US') {
 
 
 // Fetch all categories
-async function fetchCategories(language = 'en-US') {
+async function fetchCategories() {
   try {
     if (!apiDomain) {
       return [];
     }
 
-    const res = await fetch(`${apiDomain}/categories?language=${language}`);
+    const res = await fetch(`${apiDomain}/categories`);
 
     if (!res.ok) {
       throw new Error('Failed to fetch data');
