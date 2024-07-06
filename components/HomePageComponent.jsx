@@ -6,7 +6,7 @@ import FeaturedBlogPostsList from '@/components/FeaturedBlogPostsList';
 import { fetchBlogPosts, fetchCategories } from '@/utils/request';
 import { useEffect, useState } from 'react';
 
-const HomePageComponent = () => {
+const HomePageComponent = ({ currentLocale }) => {
   const [blogPosts, setBlogPosts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [featuredBlogPosts, setFeaturedBlogPosts] = useState([]);
@@ -18,7 +18,7 @@ const HomePageComponent = () => {
       try {
         setLoading(true); // Ensure loading state is set to true when refetching
         console.log('Fetching data for language:'); // Debugging statement
-        const fetchedBlogPosts = await fetchBlogPosts();
+        const fetchedBlogPosts = await fetchBlogPosts(currentLocale);
         const fetchedCategories = await fetchCategories();
         setBlogPosts(fetchedBlogPosts);
         setCategories([{ name: 'show all' }, ...fetchedCategories]);
@@ -31,7 +31,7 @@ const HomePageComponent = () => {
     };
 
     fetchData();
-  }, []);
+  }, [currentLocale]);
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
@@ -49,7 +49,6 @@ const HomePageComponent = () => {
         <Spinner loading={loading} />
       ) : (
         <div>
-          {/* <LanguageSelector currentLanguage={language} onChangeLanguage={setLanguage} /> */}
           <div>
             <FeaturedBlogPostsList blogPosts={featuredBlogPosts} />
           </div>

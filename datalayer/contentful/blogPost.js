@@ -1,11 +1,12 @@
 import { client } from './client';
 import { blogPostReducer } from './utils';
 
-export const getBlogPosts = async () => {
+export const getBlogPosts = async (language = 'en-US') => {
   try {
-    console.log(`Fetching blog posts for language : `);
+    console.log(`Fetching blog posts for language : ${language}`);
     const res = await client.getEntries({
       content_type: 'blogPost',
+      locale: language,
     });
 
     console.log('Fetched blog posts response:');
@@ -20,7 +21,7 @@ export const getBlogPosts = async () => {
 
     return blogPosts;
   } catch (error) {
-    console.log(`Error fetching blog posts for `, error);
+    console.log(`Error fetching blog posts for ${language}`, error);
     return [];
   }
 };

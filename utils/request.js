@@ -1,14 +1,14 @@
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN || null;
 
 // fetch all blogposts
-async function fetchBlogPosts() {
+async function fetchBlogPosts(language = 'en-US') {
   try {
     // Handle the case where the domain is not available yet
     if (!apiDomain) {
       return [];
     }
 
-    const res = await fetch(`${apiDomain}/blogPosts`);
+    const res = await fetch(`${apiDomain}/blogPosts?language=${language}`);
 
     if (!res.ok) {
       throw new Error('Failed to fetch data');
