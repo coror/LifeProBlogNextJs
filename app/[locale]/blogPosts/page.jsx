@@ -1,7 +1,7 @@
-import BlogPostPageComponent from '@/components/BlogPostPageComponent';
+import BlogPostPageListComponent from '@/components/BlogPostPageListComponent';
 
 const BlogPostsPage = ({ params: { locale } }) => {
-  return <BlogPostPageComponent currentLocale={locale} />;
+  return <BlogPostPageListComponent currentLocale={locale} />;
 };
 
 export default BlogPostsPage;

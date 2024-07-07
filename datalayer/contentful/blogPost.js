@@ -42,13 +42,17 @@ export const getSlugs = async () => {
   return slugs;
 };
 
-export const getBlogPostBySlug = async (slug) => {
+export const getBlogPostBySlug = async (slug, language = 'en-US') => {
   try {
+    // Adjust language to 'en-US' if 'en' is passed
+    const adjustedLanguage = language === 'en' ? 'en-US' : language;
+
     console.log(`Fetching blog post for slug: ${slug}, language:`);
     const found = await client.getEntries({
       content_type: 'blogPost',
       'fields.slug': slug,
       include: 2,
+      locale: adjustedLanguage,
     });
 
     console.log(`Raw API response for slug: ${slug}, language:`, found); // Detailed logging
@@ -61,11 +65,13 @@ export const getBlogPostBySlug = async (slug) => {
     const blogPost = found.items[0];
     return blogPostReducer(blogPost);
   } catch (error) {
-    console.error(`Error fetching blog post for slug ${slug} and language`, error);
+    console.error(
+      `Error fetching blog post for slug ${slug} and language`,
+      error
+    );
     return null;
   }
 };
-
 
 // export const getCategories = async () => {
 //   try {

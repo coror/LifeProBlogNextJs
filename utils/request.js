@@ -25,7 +25,7 @@ async function fetchBlogPosts(language = 'en-US') {
 }
 
 // Fetch single blogPost
-async function fetchBlogPost(slug) {
+async function fetchBlogPost(slug, language) {
   try {
     // Handle the case where the domain is not available yet
     if (!apiDomain) {
@@ -33,7 +33,7 @@ async function fetchBlogPost(slug) {
     }
 
     const res = await fetch(
-      `${apiDomain}/blogPosts/${slug}`
+      `${apiDomain}/blogPosts/${slug}?language=${language}`
     );
 
     if (!res.ok) {
@@ -47,7 +47,6 @@ async function fetchBlogPost(slug) {
     return null;
   }
 }
-
 
 // Fetch all categories
 async function fetchCategories() {

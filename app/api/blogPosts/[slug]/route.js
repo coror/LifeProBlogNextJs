@@ -3,7 +3,10 @@ import { getBlogPostBySlug } from '@/datalayer/contentful/blogPost';
 // GET /api/blogPosts/:slug
 export const GET = async (request, { params }) => {
   try {
-    const blogPost = await getBlogPostBySlug(params.slug);
+    const { searchParams } = new URL(request.url);
+    const language = searchParams.get('language') || 'en-US';
+
+    const blogPost = await getBlogPostBySlug(params.slug, language);
 
     if (!blogPost) {
       return new Response('Blog post not found', { status: 404 });
