@@ -10,8 +10,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
-  const { slug } = params;
-  const blogPost = await fetchBlogPost(slug);
+  const { slug, locale } = params;
+  const blogPost = await fetchBlogPost(slug, locale);
 
   if (!blogPost) {
     return {

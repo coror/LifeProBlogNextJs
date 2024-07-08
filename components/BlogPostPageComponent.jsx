@@ -15,8 +15,13 @@ const BlogPostPageComponent = ({ currentLocale }) => {
   const { t } = useTranslation();
 
   useEffect(() => {
+console.log('Current locale:', currentLocale)
+
     const fetchBlogPostData = async () => {
-      if (!slug) return;
+      if (!slug || !currentLocale) {
+        console.log('Slug or currentLocale is undefined:', slug, currentLocale);
+        return;
+      }
       setLoading(true); // Set loading to true before fetching new data
       try {
         const fetchedBlogPost = await fetchBlogPost(slug, currentLocale);

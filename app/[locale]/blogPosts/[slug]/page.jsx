@@ -1,9 +1,9 @@
 import BlogPostPageComponent from '@/components/BlogPostPageComponent';
 
-const BlogPostPage = ({ params: { locale } }) => {
+const BlogPostPage = ({ params: { locale, slug } }) => {
   return (
     <div>
-      <BlogPostPageComponent currentLocale={locale} />
+      <BlogPostPageComponent currentLocale={locale} slug={slug} />
     </div>
   );
 };
