@@ -4,6 +4,8 @@ import Footer from '@/components/Footer';
 import LanguageChanger from '@/components/LanguageChanger';
 import TranslationsProvider from '@/components/TranslationsProvider';
 import initTranslations from '../u18n';
+import { dir } from 'i18next';
+import i18nConfig from '@/i18nConfig';
 
 const i18nNamespaces = ['home', 'common', 'navbar'];
 
@@ -23,6 +25,10 @@ export const metadata = {
   // },
 };
 
+export function generateStaticParams() {
+  return i18nConfig.locales.map((locale) => ({ locale }));
+}
+
 const MainLayout = async ({ children, params: { locale } }) => {
   const { t, resources } = await initTranslations(locale, i18nNamespaces);
 
@@ -32,7 +38,7 @@ const MainLayout = async ({ children, params: { locale } }) => {
       locale={locale}
       namespaces={i18nNamespaces}
     >
-      <html lang='en-US'>
+      <html lang={locale} dir={dir(locale)}>
         <body>
           <Navbar />
           <main>{children}</main>
