@@ -6,25 +6,29 @@ import Link from 'next/link';
 import BlogPostDetails from './BlogPostDetails';
 import { fetchBlogPost } from '@/utils/request';
 import { useTranslation } from 'react-i18next';
+import {useCurrentLocale} from 'next-i18n-router/client'
+import i18nConfig from '@/i18nConfig';
 
-const BlogPostPageComponent = ({ currentLocale }) => {
+const BlogPostPageComponent = () => {
   const { slug } = useParams();
   const [blogPost, setBlogPost] = useState(null);
   const [loading, setLoading] = useState(true);
 
+const locale = useCurrentLocale(i18nConfig)
+
   const { t } = useTranslation();
 
   useEffect(() => {
-console.log('Current locale:', currentLocale)
+console.log('Current locale:', locale)
 
     const fetchBlogPostData = async () => {
-      if (!slug || !currentLocale) {
-        console.log('Slug or currentLocale is undefined:', slug, currentLocale);
+      if (!slug || !locale) {
+        console.log('Slug or currentLocale is undefined:', slug, locale);
         return;
       }
       setLoading(true); // Set loading to true before fetching new data
       try {
-        const fetchedBlogPost = await fetchBlogPost(slug, currentLocale);
+        const fetchedBlogPost = await fetchBlogPost(slug, locale);
         setBlogPost(fetchedBlogPost);
       } catch (error) {
         console.error('Error fetching blogPost:', error);
@@ -34,7 +38,7 @@ console.log('Current locale:', currentLocale)
     };
 
     fetchBlogPostData(); // Always trigger fetch on component mount or slug change
-  }, [slug, currentLocale]); // Re-fetch whenever slug or language changes
+  }, [slug, locale]); // Re-fetch whenever slug or language changes
 
   if (!blogPost && !loading) {
     notFound(); // Handle not found scenario

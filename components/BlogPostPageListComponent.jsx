@@ -3,15 +3,20 @@ import BlogPostList from './BlogPostList';
 import { useEffect, useState } from 'react';
 import { fetchBlogPosts } from '@/utils/request';
 
-const BlogPostPageListComponent = ({ currentLocale }) => {
+import { useCurrentLocale } from 'next-i18n-router/client';
+import i18nConfig from '@/i18nConfig';
+
+const BlogPostPageListComponent = () => {
   const [blogPosts, setBlogPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const locale = useCurrentLocale(i18nConfig);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const fetchedBlogPosts = await fetchBlogPosts(currentLocale);
+        const fetchedBlogPosts = await fetchBlogPosts(locale);
         fetchedBlogPosts.sort(
           (a, b) => new Date(b.datePosted) - new Date(a.datePosted)
         );
@@ -24,7 +29,7 @@ const BlogPostPageListComponent = ({ currentLocale }) => {
     };
 
     fetchData();
-  }, [currentLocale]);
+  }, [locale]);
 
   return (
     <div>

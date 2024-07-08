@@ -6,6 +6,9 @@ import FeaturedBlogPostsList from '@/components/FeaturedBlogPostsList';
 import { fetchBlogPosts, fetchCategories } from '@/utils/request';
 import { useEffect, useState } from 'react';
 
+import { useCurrentLocale } from 'next-i18n-router/client';
+import i18nConfig from '@/i18nConfig';
+
 const HomePageComponent = ({ currentLocale }) => {
   const [blogPosts, setBlogPosts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -13,12 +16,14 @@ const HomePageComponent = ({ currentLocale }) => {
   const [selectedCategory, setSelectedCategory] = useState('show all');
   const [loading, setLoading] = useState(true);
 
+  const locale = useCurrentLocale(i18nConfig);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true); // Ensure loading state is set to true when refetching
         console.log('Fetching data for language:'); // Debugging statement
-        const fetchedBlogPosts = await fetchBlogPosts(currentLocale);
+        const fetchedBlogPosts = await fetchBlogPosts(locale);
         const fetchedCategories = await fetchCategories();
         setBlogPosts(fetchedBlogPosts);
         setCategories([{ name: 'show all' }, ...fetchedCategories]);
@@ -31,7 +36,7 @@ const HomePageComponent = ({ currentLocale }) => {
     };
 
     fetchData();
-  }, [currentLocale]);
+  }, [locale]);
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
