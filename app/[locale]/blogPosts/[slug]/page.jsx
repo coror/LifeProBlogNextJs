@@ -40,10 +40,10 @@ export async function generateMetadata({ params }) {
   };
 }
 
-const BlogPostPage = () => {
+const BlogPostPage = ({ params: { locale, slug } }) => {
   return (
     <div>
-      <BlogPostPageComponent  />
+      <BlogPostPageComponent currentLocale={locale} slug={slug} />
     </div>
   );
 };

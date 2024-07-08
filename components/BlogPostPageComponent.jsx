@@ -6,7 +6,7 @@ import Link from 'next/link';
 import BlogPostDetails from './BlogPostDetails';
 import { fetchBlogPost } from '@/utils/request';
 import { useTranslation } from 'react-i18next';
-import {useCurrentLocale} from 'next-i18n-router/client'
+import { useCurrentLocale } from 'next-i18n-router/client';
 import i18nConfig from '@/i18nConfig';
 
 const BlogPostPageComponent = () => {
@@ -14,12 +14,12 @@ const BlogPostPageComponent = () => {
   const [blogPost, setBlogPost] = useState(null);
   const [loading, setLoading] = useState(true);
 
-const locale = useCurrentLocale(i18nConfig)
+  const locale = useCurrentLocale(i18nConfig);
 
   const { t } = useTranslation();
 
   useEffect(() => {
-console.log('Current locale:', locale)
+    console.log('Current locale:', locale);
 
     const fetchBlogPostData = async () => {
       if (!slug || !locale) {
